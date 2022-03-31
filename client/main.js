@@ -1,7 +1,7 @@
 const canvasElement = document.getElementById('canvas');
 const ctx = canvasElement.getContext('2d');
 let r, g, b;
-const SERVER_IP = '';
+const SERVER_IP = 'http://localhost:3000';
 
 changeCanvasColor();
 
