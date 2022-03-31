@@ -14,8 +14,10 @@ app.post('/data', (request, response) => {
 	database.insert(entry);
 });
 
+const PORT = process.env.PORT || 3000;
+
 // Starting the server
-app.listen(3000, () => {
+app.listen(PORT, () => {
 	console.log('server is running...');
 });
 
