@@ -2,6 +2,8 @@ const canvasElement = document.getElementById('canvas');
 const ctx = canvasElement.getContext('2d');
 let r, g, b;
 let database;
+const inputElement = document.getElementById('inputElement');
+const counter = document.getElementById('counter');
 
 function main(){
 	changeCanvasColor();
@@ -35,13 +37,15 @@ function setupButtons(){
 function buttonFunc(param){
 	const buttonText = param.srcElement.innerText;
 	saveToDatabase(buttonText);
+	increaseCounter();
 	changeCanvasColor();
 }
 
 function saveToDatabase(buttonText){
 	const data = {
 		r, g, b,
-		label: buttonText
+		label: buttonText,
+		user: inputElement.value
 	};
 	database.add(data);
 }
@@ -56,6 +60,10 @@ function changeCanvasColor(){
 
 function rgbToString(r, g, b){
 	return `rgb(${r}, ${g}, ${b})`;
+}
+
+function increaseCounter(){
+	counter.textContent++;
 }
 
 main();

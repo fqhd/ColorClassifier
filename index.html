@@ -10,8 +10,11 @@
 	<script defer type="module" src="./main.js"></script>
 </head>
 <body>
-	<h1>Client</h1>
-	<p>Instructions: Click on the button that matches the color. If you are not sure, press skip</p>
+	<h1>Count: <span id="counter">0</span></h1>
+	<p>Instructions: Paste your discord tag in the input box and click on the button that matches the color. If you are not sure, press skip</p>
+	<p>The person with the most correct entries will win discord nitro. (You will not win if you just spam random buttons which do not match the color)</p>
+	<input id="inputElement" type="text" placeholder="Enter discord tag here">
+	<br>
 	<canvas id="canvas" width="300" height="300"></canvas>
 	<br>
 	<button id="button1">red-ish</button>
@@ -24,4 +27,10 @@
 	<button id="button8">brown-ish</button>
 	<button id="skipButton">skip</button>
 </body>
+<style>
+	#canvas {
+		margin-top: 15px;
+		margin-bottom: 10px;
+	}
+</style>
 </html>
