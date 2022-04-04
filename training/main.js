@@ -4,7 +4,6 @@ let database;
 async function main(){
 	connectToFirebase();
 	const data = await getData();
-	// Visualize data
 	// Train neural network with the data or whatever
 }
 
@@ -43,24 +42,24 @@ async function getRawDataFromFirebase(){
 	return data;
 }
 
-async function parseData(data){
+function parseData(data){
 	const trainingData = {};
 	const competitionData = {};
 
 	data.forEach(doc => {
-		const data = doc.data();
+		console.log('hello this is an entry');
+		const entry = doc.data();
 
-		// TODO: Remember to check property names of the below code
 		// Filling training data
-		const label = data.label;
+		const label = entry.label;
 		if(!trainingData[label]){
-			trainingData[label] = [[data.r, data.g, data.b]];
+			trainingData[label] = [[entry.r, entry.g, entry.b]];
 		}else{
-			trainingData[label].push([data.r, data.g, data.b]);
+			trainingData[label].push([entry.r, entry.g, entry.b]);
 		}
 
 		// Filling competition data
-		const userID = data.user;  // TODO: get the right user id property name
+		const userID = entry.user;
 		if(!competitionData[userID]){
 			competitionData[userID] = 1;
 		}else{
@@ -68,7 +67,7 @@ async function parseData(data){
 		}
 	});
 
-	return {trainingData, competitionData};
+	return { trainingData, competitionData };
 }
 
 async function loadCachedData(){
