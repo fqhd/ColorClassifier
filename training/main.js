@@ -40,7 +40,6 @@ function createModel(){
 }
 
 function connectToFirebase(){
-	// Your web app's Firebase configuration
 	const firebaseConfig = {
 		apiKey: "AIzaSyDdX6Unz9iNFXV1KUVo80GrJ3Coaq8q5PA",
 		authDomain: "colorclassifier-110e3.firebaseapp.com",
