@@ -3,8 +3,40 @@ let database;
 
 async function main(){
 	connectToFirebase();
-	const data = await getData();
-	// Train neural network with the data or whatever
+	const crowdsourceData = await getCrowdsourceData();
+	const { xs, ys } = createTensors(crowdsourceData);
+	// Create the model
+	// Train&Test the model
+}
+
+function createTensors(crowdsourceData){
+	// Creating the inputs
+	let inputsArray = [];
+	for(const prop in crowdsourceData.trainingData){
+		const elementsInColorSection = crowdsourceData.trainingData[prop];
+		inputsArray = inputsArray.concat(elementsInColorSection);
+	}
+
+	// Creating the labels
+	let labelsArray = [];
+	let propertyIndex = 0;
+	for(const prop in crowdsourceData.trainingData){
+		const numEntriesInColorSection = crowdsourceData.trainingData[prop];
+		for(let i = 0; i < numEntriesInColorSection.length; i++){
+			labelsArray.push(propertyIndex);
+		}
+		propertyIndex++;
+	}
+	const labelsTensor = tf.tensor(labelsArray, [labelsArray.length], 'int32');
+
+	const xs = tf.tensor(inputsArray, [inputsArray.length, 3], 'int32');
+	const ys = tf.oneHot(labelsTensor, 8);
+	return { xs, ys };
+}
+
+function createModel(){
+	// const model = tf.sequential();
+	// model.add({units: 5, inputShape: []});
 }
 
 function connectToFirebase(){
@@ -22,7 +54,7 @@ function connectToFirebase(){
 	database = db.collection('entries');
 }
 
-async function getData(){
+async function getCrowdsourceData(){
 	let cache = await loadCachedData();
 	if(!cache.trainingData){
 		const firebaseData = await getRawDataFromFirebase();
