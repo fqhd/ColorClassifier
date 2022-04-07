@@ -5,58 +5,67 @@ const exceptions = ['', 'Blair#2008', 'Natalie Paquette#1573'];
 async function main(){
 	connectToFirebase();
 	const crowdsourceData = await getCrowdsourceData();
-	console.log(crowdsourceData.trainingData['red-ish']);
-	// const { xs, ys } = createTensors(crowdsourceData);
-	// const model = createModel();
-	// await trainModel(model, xs, ys);
+	const { xs, ys } = createTensors(crowdsourceData);
+	const model = createModel();
+	await trainModel(model, xs, ys);
 }
 
-function visualizeData(crowdsourceData, userID){
-	const labelNames = ['red', 'green', 'blue', 'brown', 'pink', 'purple', 'yellow', 'orange'];
-	labelNames.forEach(lName => {
-		const label = document.getElementById(lName);
-		crowdsourceData.trainingData[lName+'-ish'][userID].forEach(c => {
-			const element = document.createElement('div');
-			element.style.width = '10px';
-			element.style.height = '10px';
-			element.style.marginTop = '0px';
-			element.style.backgroundColor = `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
-			label.appendChild(element);
-		});
+function visualizeData(data){
+	const label = document.getElementById('label');
+	data.forEach(c => {
+		const element = document.createElement('div');
+		element.style.width = '10px';
+		element.style.height = '10px';
+		element.style.marginTop = '0px';
+		element.style.backgroundColor = `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
+		label.appendChild(element);
 	});
 }
 
 function createTensors(crowdsourceData){
 	// Creating the inputs
 	let inputsArray = [];
-	for(const prop in crowdsourceData.trainingData){
-		const elementsInColorSection = crowdsourceData.trainingData[prop];
-		inputsArray = inputsArray.concat(elementsInColorSection);
+	for(const label in crowdsourceData.trainingData){
+		for(const user in crowdsourceData.trainingData[label]){
+			if(exceptions.indexOf(user) == -1){
+				const userEntries = crowdsourceData.trainingData[label][user];
+				inputsArray = inputsArray.concat(userEntries);
+			}
+		}
 	}
+
+	inputsArray.forEach(c => {
+		c[0] /= 255;
+		c[1] /= 255;
+		c[2] /= 255;
+	});
 
 	// Creating the labels
 	let labelsArray = [];
 	let propertyIndex = 0;
-	for(const prop in crowdsourceData.trainingData){
-		const numEntriesInColorSection = crowdsourceData.trainingData[prop];
-		for(let i = 0; i < numEntriesInColorSection.length; i++){
-			labelsArray.push(propertyIndex);
+	for(const label in crowdsourceData.trainingData){
+		for(const user in crowdsourceData.trainingData[label]){
+			if(exceptions.indexOf(user) == -1){
+				const userEntries = crowdsourceData.trainingData[label][user];
+				for(let i = 0; i < userEntries.length; i++){
+					labelsArray.push(propertyIndex);
+				}
+			}
 		}
 		propertyIndex++;
 	}
 	const labelsTensor = tf.tensor(labelsArray, [labelsArray.length], 'int32');
 
-	const xs = tf.tensor(inputsArray, [inputsArray.length, 3], 'int32');
+	const xs = tf.tensor(inputsArray, [inputsArray.length, 3], 'float32');
 	const ys = tf.oneHot(labelsTensor, 8);
 	return { xs, ys };
 }
 
 function createModel(){
 	const model = tf.sequential();
-	model.add(tf.layers.dense({units: 8, inputShape: [3], activation: 'relu'}));
-	model.add(tf.layers.dense({units: 8, activation: 'softmax'}));
+	model.add(tf.layers.dense({units: 8, inputShape: [3], activation: 'softmax'}));
 	model.compile({
-		optimizer: tf.train.adam(0.005),
+		optimizer: tf.train.sgd(0.1),
 		loss: 'meanSquaredError'
 	});
 	return model;
@@ -65,8 +74,8 @@ function createModel(){
 async function trainModel(model, xs, ys){
 	const history = await model.fit(xs, ys, {
 		shuffle: true,
-		epochs: 10,
-		verbose: true,
+		epochs: 100,
+		verbose: true
 	});
 	console.log(history);
 }

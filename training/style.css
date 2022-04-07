@@ -1,7 +1,7 @@
-#green, #brown, #red, #orange, #yellow, #blue, #pink, #purple {
+#label {
 	display: flex;
 	flex-flow: row wrap;
-	width: 800px;
-	height: 100px;
+	width: 1000px;
+	height: 800px;
 	align-content: flex-start;
 }
