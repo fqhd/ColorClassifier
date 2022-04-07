@@ -4,9 +4,22 @@ let database;
 async function main(){
 	connectToFirebase();
 	const crowdsourceData = await getCrowdsourceData();
-	const { xs, ys } = createTensors(crowdsourceData);
-	// Create the model
-	// Train&Test the model
+	visualizeData(crowdsourceData);
+	// const { xs, ys } = createTensors(crowdsourceData);
+	// const model = createModel();
+	// await trainModel(model, xs, ys);
+}
+
+function visualizeData(crowdsourceData){
+	const label = document.getElementById('label');
+
+	crowdsourceData.trainingData['brown-ish'].forEach(c => {
+		const element = document.createElement('div');
+		element.style.width = '10px';
+		element.style.height = '10px';
+		element.style.backgroundColor = `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
+		label.appendChild(element);
+	});
 }
 
 function createTensors(crowdsourceData){
@@ -35,8 +48,23 @@ function createTensors(crowdsourceData){
 }
 
 function createModel(){
-	// const model = tf.sequential();
-	// model.add({units: 5, inputShape: []});
+	const model = tf.sequential();
+	model.add(tf.layers.dense({units: 8, inputShape: [3], activation: 'relu'}));
+	model.add(tf.layers.dense({units: 8, activation: 'softmax'}));
+	model.compile({
+		optimizer: tf.train.adam(0.005),
+		loss: 'meanSquaredError'
+	});
+	return model;
+}
+
+async function trainModel(model, xs, ys){
+	const history = await model.fit(xs, ys, {
+		shuffle: true,
+		epochs: 10,
+		verbose: true,
+	});
+	console.log(history);
 }
 
 function connectToFirebase(){

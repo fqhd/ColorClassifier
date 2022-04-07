@@ -1,0 +1,6 @@
+#label {
+	display: flex;
+	flex-flow: row wrap;
+	width: 800px;
+	height: 600px;
+}
