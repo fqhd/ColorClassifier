@@ -1,6 +1,7 @@
-#label {
+#green, #brown, #red, #orange, #yellow, #blue, #pink, #purple {
 	display: flex;
 	flex-flow: row wrap;
 	width: 800px;
-	height: 600px;
+	height: 100px;
+	align-content: flex-start;
 }

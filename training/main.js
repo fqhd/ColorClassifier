@@ -1,24 +1,28 @@
 let database;
 
+const exceptions = ['', 'Blair#2008', 'Natalie Paquette#1573'];
 
 async function main(){
 	connectToFirebase();
 	const crowdsourceData = await getCrowdsourceData();
-	visualizeData(crowdsourceData);
+	console.log(crowdsourceData.trainingData['red-ish']);
 	// const { xs, ys } = createTensors(crowdsourceData);
 	// const model = createModel();
 	// await trainModel(model, xs, ys);
 }
 
-function visualizeData(crowdsourceData){
-	const label = document.getElementById('label');
-
-	crowdsourceData.trainingData['brown-ish'].forEach(c => {
-		const element = document.createElement('div');
-		element.style.width = '10px';
-		element.style.height = '10px';
-		element.style.backgroundColor = `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
-		label.appendChild(element);
+function visualizeData(crowdsourceData, userID){
+	const labelNames = ['red', 'green', 'blue', 'brown', 'pink', 'purple', 'yellow', 'orange'];
+	labelNames.forEach(lName => {
+		const label = document.getElementById(lName);
+		crowdsourceData.trainingData[lName+'-ish'][userID].forEach(c => {
+			const element = document.createElement('div');
+			element.style.width = '10px';
+			element.style.height = '10px';
+			element.style.marginTop = '0px';
+			element.style.backgroundColor = `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
+			label.appendChild(element);
+		});
 	});
 }
 
@@ -106,19 +110,23 @@ function parseData(data){
 	const competitionData = {};
 
 	data.forEach(doc => {
-		console.log('hello this is an entry');
 		const entry = doc.data();
 
 		// Filling training data
+		const userID = entry.user;
 		const label = entry.label;
 		if(!trainingData[label]){
-			trainingData[label] = [[entry.r, entry.g, entry.b]];
+			trainingData[label] = {};
+			trainingData[label][userID] = [[entry.r, entry.g, entry.b]];
 		}else{
-			trainingData[label].push([entry.r, entry.g, entry.b]);
+			if(!trainingData[label][userID]){
+				trainingData[label][userID] = [[entry.r, entry.g, entry.b]];
+			}else{
+				trainingData[label][userID].push([entry.r, entry.g, entry.b]);
+			}
 		}
 
 		// Filling competition data
-		const userID = entry.user;
 		if(!competitionData[userID]){
 			competitionData[userID] = 1;
 		}else{
