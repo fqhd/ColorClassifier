@@ -3,6 +3,9 @@ const greenSlider = document.getElementById('slider-2');
 const blueSlider = document.getElementById('slider-3');
 const colorDisplay = document.getElementById('colorDisplay');
 const prediction = document.getElementById('prediction');
+const label_1 = document.getElementById('label-1');
+const label_2 = document.getElementById('label-2');
+const label_3 = document.getElementById('label-3');
 let model;
 const labels = ['brown-ish', 'blue-ish', 'green-ish', 'purple-ish', 'red-ish', 'orange-ish', 'yellow-ish', 'pink-ish'];
 
@@ -23,6 +26,9 @@ function inputCallback(){
 	const b = blueSlider.value;
 
 	colorDisplay.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+	label_1.innerText = r;
+	label_2.innerText = g;
+	label_3.innerText = b;
 
 	const xs = tf.tensor([[r/255, g/255, b/255]], [1, 3], 'float32');
 	const result = model.predict(xs);

@@ -10,10 +10,22 @@
 	<script defer src="./index.js"></script>
 </head>
 <body>
+	<h1>Color Classifier</h1>
 	<div id="colorDisplay"></div>
 	<p>Predicition: <span id="prediction"></span></p>
-	<input id="slider-1" type="range" min="0" max="255">
-	<input id="slider-2" type="range" min="0" max="255">
-	<input id="slider-3" type="range" min="0" max="255">
+	<div id="color-sliders">
+		<div class="color-tweaker">
+			<input id="slider-1" type="range" min="0" max="255">
+			<p>R: <span id="label-1">0</span></p>
+		</div>
+		<div class="color-tweaker">
+			<input id="slider-2" type="range" min="0" max="255">
+			<p>G: <span id="label-2">0</span></p>
+		</div>
+		<div class="color-tweaker">
+			<input id="slider-3" type="range" min="0" max="255">
+			<p>B: <span id="label-3">0</span></p>
+		</div>
+	</div>
 </body>
 </html>
