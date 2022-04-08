@@ -7,7 +7,7 @@ const label_1 = document.getElementById('label-1');
 const label_2 = document.getElementById('label-2');
 const label_3 = document.getElementById('label-3');
 let model;
-const labels = ['brown-ish', 'blue-ish', 'green-ish', 'purple-ish', 'red-ish', 'orange-ish', 'yellow-ish', 'pink-ish'];
+const labels = ['orange-ish', 'blue-ish', 'green-ish', 'purple-ish', 'red-ish', 'brown-ish', 'yellow-ish', 'pink-ish'];
 
 async function main(){
 	model = await tf.loadLayersModel('./color_classification_model.json');
