@@ -1,7 +1,0 @@
-#label {
-	display: flex;
-	flex-flow: row wrap;
-	width: 1000px;
-	height: 800px;
-	align-content: flex-start;
-}

@@ -28,6 +28,7 @@ function inputCallback(){
 	const result = model.predict(xs);
 	const index = result.argMax(1).dataSync();
 	xs.dispose();
+	result.dispose();
 	
 	prediction.innerText = labels[index];
 }

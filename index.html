@@ -4,33 +4,16 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Crowdsourcing Data</title>
-	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-	<script defer type="module" src="./main.js"></script>
+	<title>Color Classifier</title>
+	<link rel="stylesheet" href="./style.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/3.15.0/tf.min.js" integrity="sha512-NKf5nJ4CKWnnxoqAb12Jhpp3XUtPl1zRkb8LIHZ6xpmDQoFdNAyx0ErCGgCLnjaupdHsIkjFrnaqZLoVQItytg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script defer src="./index.js"></script>
 </head>
 <body>
-	<h1>Count: <span id="counter">0</span></h1>
-	<p>Instructions: Paste your discord tag in the input box and click on the button that matches the color. If you are not sure, press skip</p>
-	<p>The person with the most correct entries will win discord nitro. (You will not win if you just spam random buttons which do not match the color)</p>
-	<input id="inputElement" type="text" placeholder="Enter discord tag here">
-	<br>
-	<canvas id="canvas" width="300" height="300"></canvas>
-	<br>
-	<button id="button1">red-ish</button>
-	<button id="button2">orange-ish</button>
-	<button id="button3">yellow-ish</button>
-	<button id="button4">green-ish</button>
-	<button id="button5">blue-ish</button>
-	<button id="button6">purple-ish</button>
-	<button id="button7">pink-ish</button>
-	<button id="button8">brown-ish</button>
-	<button id="skipButton">skip</button>
+	<div id="colorDisplay"></div>
+	<p>Predicition: <span id="prediction"></span></p>
+	<input id="slider-1" type="range" min="0" max="255">
+	<input id="slider-2" type="range" min="0" max="255">
+	<input id="slider-3" type="range" min="0" max="255">
 </body>
-<style>
-	#canvas {
-		margin-top: 15px;
-		margin-bottom: 10px;
-	}
-</style>
 </html>
