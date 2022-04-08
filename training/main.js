@@ -65,8 +65,9 @@ function createModel(){
 	const model = tf.sequential();
 	model.add(tf.layers.dense({units: 8, inputShape: [3], activation: 'softmax'}));
 	model.compile({
-		optimizer: tf.train.sgd(0.1),
-		loss: 'meanSquaredError'
+		optimizer: tf.train.sgd(0.8),
+		loss: 'meanSquaredError',
+		metrics: ['accuracy']
 	});
 	return model;
 }
@@ -75,7 +76,8 @@ async function trainModel(model, xs, ys){
 	const history = await model.fit(xs, ys, {
 		shuffle: true,
 		epochs: 100,
-		verbose: true
+		verbose: true,
+		validatoinSplit: 0.1
 	});
 	console.log(history);
 }
