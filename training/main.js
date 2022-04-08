@@ -5,9 +5,15 @@ const exceptions = ['', 'Blair#2008', 'Natalie Paquette#1573'];
 async function main(){
 	connectToFirebase();
 	const crowdsourceData = await getCrowdsourceData();
-	const { xs, ys } = createTensors(crowdsourceData);
-	const model = createModel();
-	await trainModel(model, xs, ys);
+	console.log(crowdsourceData);
+	// const { xs, ys } = createTensors(crowdsourceData);
+	// const model = createModel();
+	// await trainModel(model, xs, ys);
+	// const x = tf.tensor([[1, 0, 0]], [1, 3]);
+	// const result = model.predict(x);
+	// const index = result.argMax(1).dataSync();
+	// console.log(index);
+	// await model.save('downloads://color_classification_model');
 }
 
 function visualizeData(data){
@@ -75,9 +81,12 @@ function createModel(){
 async function trainModel(model, xs, ys){
 	const history = await model.fit(xs, ys, {
 		shuffle: true,
-		epochs: 100,
+		epochs: 10,
 		verbose: true,
 		validatoinSplit: 0.1
+		// callbacks: {
+		// 	onBatchEnd: tf.nextFrame
+		// }
 	});
 	console.log(history);
 }
